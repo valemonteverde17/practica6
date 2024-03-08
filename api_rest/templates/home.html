@@ -1,0 +1,17 @@
+<h1>Pantalla de inicio</h1>
+
+{% if user.is_authenticated %}
+
+<li>
+    <a href="/salir/">Cerrar sesion</a>
+
+</li>
+
+
+{% else %}
+
+<li>
+    <a href="/registro/">Registrese</a>
+</li>
+
+{% endif %}

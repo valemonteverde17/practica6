@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path,include
 from api_rest import views
 from rest_framework import routers
+from api_rest import views
 
 
 router = routers.DefaultRouter()
@@ -26,6 +27,16 @@ router.register('bebidas',views.BebidaViewset)
 router.register('snacks',views.SnackViewset)
 
 urlpatterns = [
+    path('',views.home),
+    path('registro/',views.registro),
+    path('login/',views.iniciarSesion),
+    path('salir/',views.cerrarsesion),
+    path('nuevacomida/',views.nuevaComida),
+    path('nuevabebida/',views.nuevaBebida),
+    path('nuevosnack/',views.nuevoSnack),
     path('admin/', admin.site.urls),
     path('api/',include(router.urls)),
+    path('holamundo/',views.holamundo)
+    
+    
 ]

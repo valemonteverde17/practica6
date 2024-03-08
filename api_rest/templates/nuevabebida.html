@@ -1,0 +1,7 @@
+<h1>Agrega una nueva bebida</h1>
+{{msg}}
+<form action="/nuevabebida/" method="POST">
+{% csrf_token %}
+{{form}}
+<button>Agregar</button>
+</form>
