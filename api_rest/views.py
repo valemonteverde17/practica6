@@ -12,6 +12,7 @@ from django.contrib.auth import login, logout, authenticate
 from .forms import ComidaForm
 from .forms import BebidaForm
 from .forms import SnackForm
+from django.contrib.auth.decorators import login_required
 
 class ComidaViewset(viewsets.ModelViewSet):
     queryset = Comida.objects.all()
@@ -92,77 +93,98 @@ def cerrarsesion (request):
     logout(request)
     return redirect("/")
 
+@login_required
 def nuevaComida(request):
     if request.method == "GET":
         return render (request,"nuevacomida.html",{
             "form": ComidaForm
         })
     else:
-        form = ComidaForm(request.POST)
-        if form.is_valid():
-            nuevo = form.save(commit=False)
-            if request.user.is_authenticated:
-                nuevo.usuario=request.user
-                nuevo.save()
-                return redirect("/")
+        try:
+            form = ComidaForm(request.POST)
+            if form.is_valid():
+                nuevo = form.save(commit=False)
+                if request.user.is_authenticated:
+                    nuevo.usuario=request.user
+                    nuevo.save()
+                    return redirect("/")
+                else:
+                    return render (request,"nuevacomida.html",{
+                        "form": ComidaForm,
+                        "msg": "Usted debe autenticarse"
+                    })
+            
             else:
                 return render (request,"nuevacomida.html",{
                     "form": ComidaForm,
-                    "msg": "Usted debe autenticarse"
+                    "msg": "Este formulario no es válido"
                 })
-        
-        else:
+        except Exception as e:
             return render (request,"nuevacomida.html",{
-                "form": ComidaForm,
-                "msg": "Este formulario no es válido"
+                    "form": ComidaForm,
+                    "msg":f"Hubo un error{e}"
             })
-
+            
+@login_required
 def nuevaBebida(request):
     if request.method == "GET":
         return render (request,"nuevabebida.html",{
             "form": BebidaForm
         })
     else:
-        form = BebidaForm(request.POST)
-        if form.is_valid():
-            nuevo = form.save(commit=False)
-            if request.user.is_authenticated:
-                nuevo.usuario=request.user
-                nuevo.save()
-                return redirect("/")
+        try:
+            form = BebidaForm(request.POST)
+            if form.is_valid():
+                nuevo = form.save(commit=False)
+                if request.user.is_authenticated:
+                    nuevo.usuario=request.user
+                    nuevo.save()
+                    return redirect("/")
+                else:
+                    return render (request,"nuevabebida.html",{
+                        "form": BebidaForm,
+                        "msg": "Usted debe autenticarse"
+                    })
+            
             else:
                 return render (request,"nuevabebida.html",{
                     "form": BebidaForm,
-                    "msg": "Usted debe autenticarse"
+                    "msg": "Este formulario no es válido"
                 })
-        
-        else:
+        except Exception as e:
             return render (request,"nuevabebida.html",{
-                "form": BebidaForm,
-                "msg": "Este formulario no es válido"
+                    "form": BebidaForm,
+                    "msg":f"Hubo un error{e}"
             })
 
+@login_required
 def nuevoSnack(request):
     if request.method == "GET":
         return render (request,"nuevosnack.html",{
             "form": SnackForm
         })
     else:
-        form = SnackForm(request.POST)
-        if form.is_valid():
-            nuevo = form.save(commit=False)
-            if request.user.is_authenticated:
-                nuevo.usuario=request.user
-                nuevo.save()
-                return redirect("/")
+        try: 
+            form = SnackForm(request.POST)
+            if form.is_valid():
+                nuevo = form.save(commit=False)
+                if request.user.is_authenticated:
+                    nuevo.usuario=request.user
+                    nuevo.save()
+                    return redirect("/")
+                else:
+                    return render (request,"nuevosnack.html",{
+                        "form": SnackForm,
+                        "msg": "Usted debe autenticarse"
+                    })
+            
             else:
                 return render (request,"nuevosnack.html",{
                     "form": SnackForm,
-                    "msg": "Usted debe autenticarse"
+                    "msg": "Este formulario no es válido"
                 })
-        
-        else:
+        except Exception as e:
             return render (request,"nuevosnack.html",{
-                "form": SnackForm,
-                "msg": "Este formulario no es válido"
+                    "form": SnackForm,
+                    "msg":f"Hubo un error{e}"
             })
